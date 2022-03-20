@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const ActivitySchema = new mongoose.Schema(
     {
+        action: { type: String },
         activity: {
             type: mongoose.Schema.Types.ObjectId,
             required: true,

@@ -7,6 +7,7 @@ const createPost = async (req, res) => {
     });
     try {
         const savedPost = await newPost.save();
+        res.activity = { action: "create", id: savedPost._id, model: "Post" };
         return res.status(201).json(savedPost);
     } catch (err) {
         return res.status(500).json(err);
@@ -34,6 +35,7 @@ const deletePost = async (req, res) => {
     const post = req.post;
     try {
         const deletedPost = await Post.findByIdAndDelete(post._id);
+        res.activity = { action: "delete", id: deletedPost._id, model: "Post" };
         return res.status(200).json(deletedPost);
     } catch (err) {
         return res.status(500).json(err);
@@ -62,6 +64,7 @@ const sharePost = async (req, res) => {
             post: postToShare,
         });
         const sharedPost = await newPost.save();
+        res.activity = { action: "share", id: sharedPost._id, model: "Post" };
         return res.status(201).json(sharedPost);
     } catch (err) {
         return res.status(500).json(err);

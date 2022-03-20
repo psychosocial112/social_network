@@ -77,15 +77,15 @@ router.put("/:post", verifyToken, updatePost);
 router.delete("/:post", verifyToken, deletePost);
 
 //comment routes
-router.post("/:post", verifyToken, createComment);
-router.get("/:post", getComments);
+router.post("/:post/comments", verifyToken, createComment);
+router.get("/:post/comments", getComments);
 router.post("/:post/comments/:comment", verifyToken, createReply);
 router.put("/:post/comments/:comment", verifyToken, isCommentOwner, updateComment);
-router.delete("/:post/:comment", verifyToken, isCommentOwner, deleteComment);
+router.delete("/:post/comments/:comment", verifyToken, isCommentOwner, deleteComment);
 
 // reaction routes
-router.get("/:post/like", verifyToken, likePost);
-router.get("/:post/dislike", verifyToken, dislikePost);
-router.delete("/:post/:reaction", verifyToken, isReactionOwner, removeReaction);
+router.get("/:post/reactions/like", verifyToken, likePost);
+router.get("/:post/reactions/dislike", verifyToken, dislikePost);
+router.delete("/:post/reactions/:reaction", verifyToken, isReactionOwner, removeReaction);
 
 module.exports = router;
