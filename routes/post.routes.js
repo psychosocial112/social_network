@@ -69,7 +69,7 @@ router.param("reaction", async (req, res, next, reactionId) => {
     }
 });
 //post routes
-router.post("/", verifyToken, createPost);
+router.post("/",  createPost);
 router.get("/", getPosts);
 router.post("/:post", verifyToken, sharePost)
 router.get("/:post", getPost);

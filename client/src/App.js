@@ -4,10 +4,17 @@ import { Provider } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { setAuthToken } from "./utils/setAuthToken";
 import { authCheck, logout } from "./actions/auth.actions";
+import "./assets/css/color.css";
+import "./assets/css/main.min.css"
+import "./assets/css/responsive.css";
+import "./assets/css/style.css";
+
 import Header from "./shared/Header";
 import Footer from "./shared/Footer";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Home from "./pages/Home"
+import NotFound from "./pages/NotFound";
 
 function App() {
   useEffect(() => {
@@ -29,16 +36,20 @@ function App() {
   return ( 
     <Provider store={store}>
 			<BrowserRouter>
-				<div>
-					<Header />
-					<div>
-						<Routes>
-							<Route path="/login" element={<Login />}></Route>
-							<Route path="/register" element={<Register />}></Route>
-						</Routes>
-					</div>
-					<Footer/>
-				</div>
+
+						<div>
+							<Header/>
+							<div>
+							<Routes>
+								<Route path="/login" element={<Login />}></Route>
+								<Route path="/register" element={<Register />}></Route>
+								<Route path="/" element={<Home />}></Route>
+								<Route path="*" element={<NotFound/>}></Route>
+							</Routes>
+							</div>
+							<Footer/>
+						</div>
+
 			</BrowserRouter>
 		</Provider>
   );
