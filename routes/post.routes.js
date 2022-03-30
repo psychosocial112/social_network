@@ -5,6 +5,8 @@ const {
     getPosts,
     deletePost,
     updatePost,
+    getMyPostsWithComments,
+    getPostsWithComments,
 } = require("../controllers/post.controllers");
 
 const {
@@ -69,8 +71,9 @@ router.param("reaction", async (req, res, next, reactionId) => {
     }
 });
 //post routes
-router.post("/",  createPost);
-router.get("/", getPosts);
+router.post("/", verifyToken,  createPost);
+router.get("/me", verifyToken, getMyPostsWithComments)
+router.get("/", getPostsWithComments);
 router.post("/:post", verifyToken, sharePost)
 router.get("/:post", getPost);
 router.put("/:post", verifyToken, updatePost);

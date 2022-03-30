@@ -1,46 +1,23 @@
-import React, { useEffect, useState } from "react";
+
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux"
-import { getPosts } from "../../actions/post.actions"
-import { createPost } from "../../actions/post.actions"
-import { Navigate } from "react-router-dom";
+import { getMyPosts } from "../../../actions/post.actions"
 
-
-const Home = () => {
+const Timeline = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-      dispatch(getPosts());
+      dispatch(getMyPosts());
   }, []);
   const { posts } = useSelector((state) => {
     return state.postReducers;
 });
-
-const { isAuthenticated } = useSelector((state) => {
-	return state.authReducers;
-});
-
-  const [Form, setForm] = useState({
-    content: "",
-  });
-  const onInputChange = (e) => {
-    setForm({ ...Form, [e.target.name]: e.target.value });
-  };
-  const onSubmitForm = (e) => {
-    e.preventDefault();
-    dispatch(createPost(Form));
-
-
-    setForm({
-      ...Form,
-      content: "",
-    });
-  };
-	if (!isAuthenticated) {
-    return <Navigate to={"/login"} />;
-  }
-
+  
   return (
-    <section>
+    <div>	
+	{/* top area */}
+		
+	<section>
 		<div className="gap gray-bg">
 			<div className="container-fluid">
 				<div className="row">
@@ -104,72 +81,72 @@ const { isAuthenticated } = useSelector((state) => {
 												<div className="activity-meta">
 													<i>10 hours Ago</i>
 													<span><a href="#" title="">Commented on Video posted </a></span>
-													<h6>by <a href="time-line.html">black demon.</a></h6>
+													<h6>by <a href="newsfeed.html">black demon.</a></h6>
 												</div>
 											</li>
 											<li>
 												<div className="activity-meta">
 													<i>30 Days Ago</i>
-													<span><a href="#" title="">Posted your status. “Hello guys, how are you?”</a></span>
+													<span><a href="newsfeed.html" title="">Posted your status. “Hello guys, how are you?”</a></span>
 												</div>
 											</li>
 											<li>
 												<div className="activity-meta">
 													<i>2 Years Ago</i>
 													<span><a href="#" title="">Share a video on her timeline.</a></span>
-													<h6>"<a href="#">you are so funny mr.been.</a>"</h6>
+													<h6>"<a href="newsfeed.html">you are so funny mr.been.</a>"</h6>
 												</div>
 											</li>
 										</ul>
 									</div>{/* recent activites */}
-									
 								</aside>
 							</div>{/* sidebar */}
 							<div className="col-lg-6">
-								<div className="central-meta">
-									<div className="new-postbox">
-										<figure>
-											<img src="images/resources/admin2.jpg" alt=""/>
-										</figure>
-										<div className="newpst-input">
-											<form onSubmit={(e) => onSubmitForm(e)}>
-												<textarea onChange={(e) => onInputChange(e)} name="content" value={Form.content} rows="2" placeholder="write something"></textarea>
-												<div className="attachments">
-													<ul>
-														<li>
-															<i className="fa fa-music"></i>
-															<label className="fileContainer">
-																<input type="file"/>
-															</label>
-														</li>
-														<li>
-															<i className="fa fa-image"></i>
-															<label className="fileContainer">
-																<input type="file"/>
-															</label>
-														</li>
-														<li>
-															<i className="fa fa-video-camera"></i>
-															<label className="fileContainer">
-																<input type="file"/>
-															</label>
-														</li>
-														<li>
-															<i className="fa fa-camera"></i>
-															<label className="fileContainer">
-																<input type="file"/>
-															</label>
-														</li>
-														<li>
-															<button type="submit">Post</button>
-														</li>
-													</ul>
-												</div>
-											</form>
-										</div>
-									</div>
-								</div>{/* add post new box */}
 								<div className="loadMore">
+									<div className="central-meta item">
+										<div className="new-postbox">
+											<figure>
+												<img src="images/resources/admin2.jpg" alt=""/>
+											</figure>
+											<div className="newpst-input">
+												<form method="post">
+													<textarea rows="2" placeholder="write something"></textarea>
+													<div className="attachments">
+														<ul>
+															<li>
+																<i className="fa fa-music"></i>
+																<label className="fileContainer">
+																	<input type="file"/>
+																</label>
+															</li>
+															<li>
+																<i className="fa fa-image"></i>
+																<label className="fileContainer">
+																	<input type="file"/>
+																</label>
+															</li>
+															<li>
+																<i className="fa fa-video-camera"></i>
+																<label className="fileContainer">
+																	<input type="file"/>
+																</label>
+															</li>
+															<li>
+																<i className="fa fa-camera"></i>
+																<label className="fileContainer">
+																	<input type="file"/>
+																</label>
+															</li>
+															<li>
+																<button type="submit">Publish</button>
+															</li>
+														</ul>
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>{/* add post new box */}
+									<div className="loadMore">
                 {posts.length > 0 && 
                     posts.map((post) => (
                       <div key={post._id} className="central-meta item">
@@ -348,85 +325,10 @@ const { isAuthenticated } = useSelector((state) => {
 								</div>
                     ))}
 								</div>
+								</div>
 							</div>{/* centerl meta */}
 							<div className="col-lg-3">
 								<aside className="sidebar static">
-									<div className="widget">
-										<h4 className="widget-title">Your page</h4>	
-										<div className="your-page">
-											<figure>
-												<a href="#" title=""><img src="images/resources/friend-avatar9.jpg" alt=""/></a>
-											</figure>
-											<div className="page-meta">
-												<a href="#" title="" className="underline">My page</a>
-												<span><i className="ti-comment"></i><a href="insight.html" title="">Messages <em>9</em></a></span>
-												<span><i className="ti-bell"></i><a href="insight.html" title="">Notifications <em>2</em></a></span>
-											</div>
-											<div className="page-likes">
-												<ul className="nav nav-tabs likes-btn">
-													<li className="nav-item"><a className="active" href="#link1" data-toggle="tab">likes</a></li>
-													 <li className="nav-item"><a className="" href="#link2" data-toggle="tab">views</a></li>
-												</ul>
-												{/* Tab panes */}
-												<div className="tab-content">
-												  <div className="tab-pane active fade show " id="link1" >
-													<span><i className="ti-heart"></i>884</span>
-													  <a href="#" title="weekly-likes">35 new likes this week</a>
-													  <div className="users-thumb-list">
-														<a href="#" title="Anderw" data-toggle="tooltip">
-															<img src="images/resources/userlist-1.jpg" alt=""/>  
-														</a>
-														<a href="#" title="frank" data-toggle="tooltip">
-															<img src="images/resources/userlist-2.jpg" alt=""/>  
-														</a>
-														<a href="#" title="Sara" data-toggle="tooltip">
-															<img src="images/resources/userlist-3.jpg" alt=""/>  
-														</a>
-														<a href="#" title="Amy" data-toggle="tooltip">
-															<img src="images/resources/userlist-4.jpg" alt=""/>  
-														</a>
-														<a href="#" title="Ema" data-toggle="tooltip">
-															<img src="images/resources/userlist-5.jpg" alt=""/>  
-														</a>
-														<a href="#" title="Sophie" data-toggle="tooltip">
-															<img src="images/resources/userlist-6.jpg" alt=""/>  
-														</a>
-														<a href="#" title="Maria" data-toggle="tooltip">
-															<img src="images/resources/userlist-7.jpg" alt=""/>  
-														</a>  
-													  </div>
-												  </div>
-												  <div className="tab-pane fade" id="link2" >
-													  <span><i className="ti-eye"></i>440</span>
-													  <a href="#" title="weekly-likes">440 new views this week</a>
-													  <div className="users-thumb-list">
-														<a href="#" title="Anderw" data-toggle="tooltip">
-															<img src="images/resources/userlist-1.jpg" alt=""/>  
-														</a>
-														<a href="#" title="frank" data-toggle="tooltip">
-															<img src="images/resources/userlist-2.jpg" alt=""/>  
-														</a>
-														<a href="#" title="Sara" data-toggle="tooltip">
-															<img src="images/resources/userlist-3.jpg" alt=""/>  
-														</a>
-														<a href="#" title="Amy" data-toggle="tooltip">
-															<img src="images/resources/userlist-4.jpg" alt=""/>  
-														</a>
-														<a href="#" title="Ema" data-toggle="tooltip">
-															<img src="images/resources/userlist-5.jpg" alt=""/>  
-														</a>
-														<a href="#" title="Sophie" data-toggle="tooltip">
-															<img src="images/resources/userlist-6.jpg" alt=""/>  
-														</a>
-														<a href="#" title="Maria" data-toggle="tooltip">
-															<img src="images/resources/userlist-7.jpg" alt=""/>  
-														</a>  
-													  </div>
-												  </div>
-												</div>
-											</div>
-										</div>
-									</div>{/* page like widget */}
 									
 									<div className="widget friend-list stick-widget">
 										<h4 className="widget-title">Friends</h4>
@@ -439,7 +341,7 @@ const { isAuthenticated } = useSelector((state) => {
 												</figure>
 												<div className="friendz-meta">
 													<a href="time-line.html">bucky barnes</a>
-													<i><a href="https://wpkixx.com/cdn-cgi/l/email-protection" className="__cf_email__" data-cfemail="a0d7c9ced4c5d2d3cfccc4c5d2e0c7cdc1c9cc8ec3cfcd">[email&#160;protected]</a></i>
+													<i><a href="https://wpkixx.com/cdn-cgi/l/email-protection" className="__cf_email__" data-cfemail="4136282f352433322e2d25243301262c20282d6f222e2c">[email&#160;protected]</a></i>
 												</div>
 											</li>
 											<li>
@@ -449,7 +351,7 @@ const { isAuthenticated } = useSelector((state) => {
 												</figure>
 												<div className="friendz-meta">
 													<a href="time-line.html">Sarah Loren</a>
-													<i><a href="https://wpkixx.com/cdn-cgi/l/email-protection" className="__cf_email__" data-cfemail="b4d6d5c6dad1c7f4d3d9d5ddd89ad7dbd9">[email&#160;protected]</a></i>
+													<i><a href="https://wpkixx.com/cdn-cgi/l/email-protection" className="__cf_email__" data-cfemail="3a585b48545f497a5d575b535614595557">[email&#160;protected]</a></i>
 												</div>
 											</li>
 											<li>
@@ -459,7 +361,7 @@ const { isAuthenticated } = useSelector((state) => {
 												</figure>
 												<div className="friendz-meta">
 													<a href="time-line.html">jason borne</a>
-													<i><a href="https://wpkixx.com/cdn-cgi/l/email-protection" className="__cf_email__" data-cfemail="1d777c6e72737f5d7a707c7471337e7270">[email&#160;protected]</a></i>
+													<i><a href="https://wpkixx.com/cdn-cgi/l/email-protection" className="__cf_email__" data-cfemail="127873617d7c7052757f737b7e3c717d7f">[email&#160;protected]</a></i>
 												</div>
 											</li>
 											<li>
@@ -469,7 +371,7 @@ const { isAuthenticated } = useSelector((state) => {
 												</figure>
 												<div className="friendz-meta">
 													<a href="time-line.html">Cameron diaz</a>
-													<i><a href="https://wpkixx.com/cdn-cgi/l/email-protection" className="__cf_email__" data-cfemail="bed4dfcdd1d0dcfed9d3dfd7d290ddd1d3">[email&#160;protected]</a></i>
+													<i><a href="https://wpkixx.com/cdn-cgi/l/email-protection" className="__cf_email__" data-cfemail="620803110d0c0022050f030b0e4c010d0f">[email&#160;protected]</a></i>
 												</div>
 											</li>
 											<li>
@@ -480,7 +382,7 @@ const { isAuthenticated } = useSelector((state) => {
 												</figure>
 												<div className="friendz-meta">
 													<a href="time-line.html">daniel warber</a>
-													<i><a href="https://wpkixx.com/cdn-cgi/l/email-protection" className="__cf_email__" data-cfemail="553f34263a3b37153238343c397b363a38">[email&#160;protected]</a></i>
+													<i><a href="https://wpkixx.com/cdn-cgi/l/email-protection" className="__cf_email__" data-cfemail="0963687a66676b496e64686065276a6664">[email&#160;protected]</a></i>
 												</div>
 											</li>
 											<li>
@@ -491,7 +393,7 @@ const { isAuthenticated } = useSelector((state) => {
 												</figure>
 												<div className="friendz-meta">
 													<a href="time-line.html">andrew</a>
-													<i><a href="https://wpkixx.com/cdn-cgi/l/email-protection" className="__cf_email__" data-cfemail="5933382a36373b193e34383035773a3634">[email&#160;protected]</a></i>
+													<i><a href="https://wpkixx.com/cdn-cgi/l/email-protection" className="__cf_email__" data-cfemail="5b313a283435391b3c363a323775383436">[email&#160;protected]</a></i>
 												</div>
 											</li>
 											<li>
@@ -502,7 +404,7 @@ const { isAuthenticated } = useSelector((state) => {
 												</figure>
 												<div className="friendz-meta">
 													<a href="time-line.html">amy watson</a>
-													<i><a href="https://wpkixx.com/cdn-cgi/l/email-protection" className="__cf_email__" data-cfemail="5933382a36373b193e34383035773a3634">[email&#160;protected]</a></i>
+													<i><a href="https://wpkixx.com/cdn-cgi/l/email-protection" className="__cf_email__" data-cfemail="472d263428292507202a262e2b6924282a">[email&#160;protected]</a></i>
 												</div>
 											</li>
 											<li>
@@ -513,7 +415,7 @@ const { isAuthenticated } = useSelector((state) => {
 												</figure>
 												<div className="friendz-meta">
 													<a href="time-line.html">daniel warber</a>
-													<i><a href="https://wpkixx.com/cdn-cgi/l/email-protection" className="__cf_email__" data-cfemail="dbb1baa8b4b5b99bbcb6bab2b7f5b8b4b6">[email&#160;protected]</a></i>
+													<i><a href="https://wpkixx.com/cdn-cgi/l/email-protection" className="__cf_email__" data-cfemail="7a101b091514183a1d171b131654191517">[email&#160;protected]</a></i>
 												</div>
 											</li>
 											<li>
@@ -524,7 +426,7 @@ const { isAuthenticated } = useSelector((state) => {
 												</figure>
 												<div className="friendz-meta">
 													<a href="time-line.html">Sarah Loren</a>
-													<i><a href="https://wpkixx.com/cdn-cgi/l/email-protection" className="__cf_email__" data-cfemail="2644475448435566414b474f4a0845494b">[email&#160;protected]</a></i>
+													<i><a href="https://wpkixx.com/cdn-cgi/l/email-protection" className="__cf_email__" data-cfemail="7c1e1d0e12190f3c1b111d1510521f1311">[email&#160;protected]</a></i>
 												</div>
 											</li>
 										</ul>
@@ -545,7 +447,7 @@ const { isAuthenticated } = useSelector((state) => {
 															<span className="chat-message-item">
 																Hi James! Please remember to buy the food for tomorrow! I’m gonna be handling the gifts and Jake’s gonna get the drinks
 															</span>
-															<span className="notification-date"><time dateTime="2004-07-24T18:18" className="entry-date updated">Yesterday at 8:10pm</time></span>
+															<span className="notification-date"><time datetime="2004-07-24T18:18" className="entry-date updated">Yesterday at 8:10pm</time></span>
 														</div>
 													</li>
 													<li className="you">
@@ -599,7 +501,8 @@ const { isAuthenticated } = useSelector((state) => {
 			</div>
 		</div>	
 	</section>
+    </div>
   )
 }
 
-export default Home
+export default Timeline

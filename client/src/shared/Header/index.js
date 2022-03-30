@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import logo from "../../assets/images/logo.png"
 
 const Header
@@ -7,36 +8,16 @@ const Header
     <div>
       <div className="topbar stick">
 		<div className="logo">
-			<a title="" href="newsfeed.html"><img src={logo} alt=""/></a>
+			<Link title="" to={"/"}><img src={logo} alt=""/></Link>
 		</div>
 		
 		<div className="top-area">
 			<ul className="main-menu">
 				<li>
-					<a href="#" title="">Home</a>
-					<ul>
-						<li><a href="index-2.html" title="">Home Social</a></li>
-						<li><a href="index2.html" title="">Home Social 2</a></li>
-						<li><a href="index-company.html" title="">Home Company</a></li>
-						<li><a href="landing.html" title="">Login page</a></li>
-						<li><a href="logout.html" title="">Logout Page</a></li>
-						<li><a href="newsfeed.html" title="">news feed</a></li>
-					</ul>
+					<Link to={"/"} title="">Home</Link>
 				</li>
 				<li>
-					<a href="#" title="">timeline</a>
-					<ul>
-						<li><a href="time-line.html" title="">timeline</a></li>
-						<li><a href="timeline-friends.html" title="">timeline friends</a></li>
-						<li><a href="timeline-groups.html" title="">timeline groups</a></li>
-						<li><a href="timeline-pages.html" title="">timeline pages</a></li>
-						<li><a href="timeline-photos.html" title="">timeline photos</a></li>
-						<li><a href="timeline-videos.html" title="">timeline videos</a></li>
-						<li><a href="fav-page.html" title="">favourit page</a></li>
-						<li><a href="groups.html" title="">groups page</a></li>
-						<li><a href="page-likers.html" title="">Likes page</a></li>
-						<li><a href="people-nearby.html" title="">people nearby</a></li>
-					</ul>
+					<Link to={"/profile"} title="">timeline</Link>
 				</li>
 				<li>
 					<a href="#" title="">account settings</a>

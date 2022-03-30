@@ -26,7 +26,7 @@ export const getComments = (postId) => async (dispatch) => {
 export const createComment = (data, postId) => async (dispatch) => {
 	
 	try {
-		const res = await axios.get(`/api/posts/${postId}/comments`, data, {
+		const res = await axios.post(`/api/posts/${postId}/comments`, data, {
       headers: { "Content-Type": "application/json" },
     });
 		dispatch({

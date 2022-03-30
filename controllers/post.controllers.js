@@ -1,15 +1,17 @@
+const { default: mongoose } = require("mongoose");
 const Post = require("../models/post.models");
 
 const createPost = async (req, res, next) => {
     const newPost = new Post({
         content: req.body.content,
         image: req.body.image,
+        author: req.verifiedUser._id,
     });
     try {
         const savedPost = await newPost.save();
         res.activity = { action: "create", id: savedPost._id, model: "Post" };
         res.status(201).json(savedPost);
-        return next()
+        return next();
     } catch (err) {
         return res.status(500).json(err);
     }
@@ -26,12 +28,86 @@ const getPost = async (req, res) => {
 
 const getPosts = async (req, res) => {
     try {
-        const posts = await Post.find();
+        const posts = await Post.find().populate("author");
         return res.status(200).json(posts);
     } catch (err) {
         return res.status(500).json(err);
     }
 };
+const getPostsWithComments = async (req, res) => {
+    try {
+        const posts = await Post.aggregate([
+            {
+                $lookup: {
+                    from: "comments",
+                    localField: "_id",
+                    foreignField: "post",
+                    as: "comments",
+                    pipeline: [
+                        { $match: { comment: null } },
+                        {
+                            $lookup: {
+                                from: "comments",
+                                localField: "_id",
+                                foreignField: "comment",
+                                as: "replies",
+                            },
+                        },
+                    ],
+                },
+            },
+
+            {
+                $lookup: {
+                    from: "reactions",
+                    localField: "_id",
+                    foreignField: "post",
+                    as: "likes",
+                    pipeline: [{ $match: { reaction: "like" } }],
+                },
+            },
+
+            {
+                $lookup: {
+                    from: "reactions",
+                    localField: "_id",
+                    foreignField: "post",
+                    as: "dislikes",
+                    pipeline: [{ $match: { reaction: "dislike" } }],
+                },
+            },
+            { $addFields: { likes: { $size: "$likes" } } },
+            { $addFields: { dislikes: { $size: "$dislikes" } } },
+        ])
+        await Post.populate(posts, { path: "author" });
+
+        return res.status(200).json(posts);
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+};
+
+const getMyPostsWithComments = async (req, res) => {
+    const user = req.verifiedUser._id;
+    try {
+        const posts = await Post.aggregate([
+            { $match: { author: mongoose.Types.ObjectId(user) } },
+            {
+                $lookup: {
+                    from: "comments",
+                    localField: "_id",
+                    foreignField: "post",
+                    as: "postComments",
+                },
+            },
+        ]);
+        await Post.populate(posts, { path: "author" });
+        return res.status(200).json(posts);
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+};
+
 const deletePost = async (req, res) => {
     const post = req.post;
     try {
@@ -67,7 +143,7 @@ const sharePost = async (req, res, next) => {
         const sharedPost = await newPost.save();
         res.activity = { action: "share", id: sharedPost._id, model: "Post" };
         res.status(201).json(sharedPost);
-        return next()
+        return next();
     } catch (err) {
         return res.status(500).json(err);
     }
@@ -77,5 +153,7 @@ module.exports.createPost = createPost;
 module.exports.sharePost = sharePost;
 module.exports.getPost = getPost;
 module.exports.getPosts = getPosts;
+module.exports.getPostsWithComments = getPostsWithComments;
+module.exports.getMyPostsWithComments = getMyPostsWithComments;
 module.exports.deletePost = deletePost;
 module.exports.updatePost = updatePost;

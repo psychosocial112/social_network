@@ -14,6 +14,7 @@ import Footer from "./shared/Footer";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home"
+import Profile from "./pages/Profile"
 import NotFound from "./pages/NotFound";
 
 function App() {
@@ -44,6 +45,7 @@ function App() {
 								<Route path="/login" element={<Login />}></Route>
 								<Route path="/register" element={<Register />}></Route>
 								<Route path="/" element={<Home />}></Route>
+								<Route path="/profile/*" element={<Profile/>}></Route>
 								<Route path="*" element={<NotFound/>}></Route>
 							</Routes>
 							</div>

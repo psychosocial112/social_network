@@ -1,6 +1,6 @@
 const {
     getProfile,
-    updateProfile,
+    updateMyProfile,
     getMyProfile,
 } = require("../controllers/profile.controllers");
 
@@ -62,9 +62,10 @@ router.param("user", async (req, res, next, userId) => {
 });
 // profile routes
 router.get("/activities/me", verifyToken, getOwnActivities);
-router.get("/:user/:profile", getProfile);
 router.get("/profile/me", verifyToken, getMyProfile);
-router.put("/:user/:profile", verifyToken, isProfileOwner, updateProfile);
+router.put("/profile/me", verifyToken,  updateMyProfile);
+router.get("/:user/:profile", getProfile);
+
 
 // relationship routes
 router.get("/:user/relationships/add_friend", verifyToken, sendFriendRequest);

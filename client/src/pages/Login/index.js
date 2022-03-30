@@ -24,6 +24,12 @@ const Login = () => {
             password: "",
         });
     };
+    const { isLoading, isAuthenticated } = useSelector((state) => {
+        return state.authReducers;
+      });
+      if (isAuthenticated) {
+        return <Navigate to={"/"} />;
+      }
     return (
         <div className="theme-layout">
             <div className="container-fluid pdng0">

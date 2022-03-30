@@ -10,7 +10,7 @@ const getProfile = async (req, res) => {
 };
 
 const getMyProfile = async (req, res) => {
-    const myProfileId = req.verifiedUser._id;
+    const myProfileId = req.verifiedUser.profile;
     try {
         const myProfile = await Profile.findById(myProfileId);
         return res.status(200).json(myProfile);
@@ -19,17 +19,21 @@ const getMyProfile = async (req, res) => {
     }
 };
 
-const updateProfile = async (req, res) => {
-    const profile = req.profile;
+const updateMyProfile = async (req, res) => {
+    const profile = req.verifiedUser.profile;
     try {
         const updatedProfile = await Profile.findByIdAndUpdate(
-            profile._id,
+            profile,
             req.body,
             { new: true }
         );
-    } catch (err) {}
+        return res.status(200).json(updatedProfile)
+    } catch (err) {
+        return res.status(500).json(err)
+    }
 };
 
+
 module.exports.getProfile = getProfile;
-module.exports.updateProfile = updateProfile;
+module.exports.updateMyProfile = updateMyProfile;
 module.exports.getMyProfile = getMyProfile;
